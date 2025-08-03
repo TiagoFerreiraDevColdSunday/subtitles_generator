@@ -3,7 +3,7 @@ import time
 import typer
 
 from watchdog.observers import Observer
-from thread import Handler, FOLDER
+from thread import Handler
 
 app =  typer.Typer()
 

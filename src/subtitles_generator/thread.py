@@ -1,10 +1,8 @@
 from pathlib import Path
 import threading
 from watchdog.events import FileSystemEventHandler
-from folder_manipulation import detect_folder
+from manipulation.folder_manipulation import detect_folder
 from whisper_functions import generate_subtitles
-
-FOLDER = Path("/Users/tiagoferreira/projects/subtitles-generator/src/subtitles_generator/subtitles")
 
 def action(language: str, directory: str):
     mp3_paths = detect_folder(directory)
