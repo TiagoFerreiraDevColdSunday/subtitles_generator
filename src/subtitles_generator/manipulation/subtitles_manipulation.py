@@ -22,6 +22,8 @@ def style_subtitles(file: str, subtitle_name: str, path: str) -> None:
 
     subs.styles["Default"] = style
 
+    print(f"File with the name: {subtitle_name} created")
+
     output_path = os.path.join(path, subtitle_name + ".ass")
     subs.save(output_path)
 

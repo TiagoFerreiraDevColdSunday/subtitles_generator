@@ -1,14 +1,14 @@
 from pathlib import Path
 
-def detect_folder(folder: Path) -> list[Path]:
+def detect_folder(folder: Path, file_type: str) -> list[Path]:
 
     folder = Path(folder)
 
-    mp3_files = [f.resolve() for f in folder.glob("*.mp3")]
+    files = [f.resolve() for f in folder.glob(f"*.{file_type}")]
 
-    print(f"Detected MP3 files: {mp3_files}")
+    print(f"Detected files: {files}")
 
-    if not mp3_files:
-        raise FileNotFoundError(f"No MP3 files found in {folder}")
+    if not files:
+        raise FileNotFoundError(f"No files with the format {file_type} found in {folder}")
     
-    return mp3_files
+    return files

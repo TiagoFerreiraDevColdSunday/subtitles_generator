@@ -1,31 +1,40 @@
+import os
+
 from pathlib import Path
 from typing import List
-import whisper
 
-from whisper.utils import WriteSRT
+from faster_whisper import WhisperModel
 from manipulation.subtitles_manipulation import style_subtitles 
 
 # try "large-v3-turbo", device="cuda" or device="metal", compute_type="float16"
-MODEL = whisper.load_model("large-v3-turbo", device="cpu")
+MODEL = WhisperModel("large-v3-turbo", device="cpu", compute_type="int8")
 
 def generate_subtitles(audio_files: List[Path], language: Path = "en", directory: str = "") -> None:
     
     for i, audio_file in enumerate(audio_files):
-        
-        file_name = f"{directory}/output_{i}.srt"
-
+        file_name = f"{directory}/{audio_file.name}mp3.srt"
         print(f"Processing file {audio_file.name}\n\nFiles will be sent to {directory}\n\n")
 
-        result = MODEL.transcribe(str(audio_file), language=language) # ja
-        
-        write_srt = WriteSRT(output_dir=audio_file.parent)
+        segments, info = MODEL.transcribe(str(audio_file), language=language)
 
+        # Write SRT manually from faster_whisper segments
         with open(file_name, "w", encoding="utf-8") as f:
-            write_srt.write_result(result, file=f)
+            for idx, segment in enumerate(segments):
+                # segment.start, segment.end, segment.text
+                start = _format_timestamp(segment.start)
+                end = _format_timestamp(segment.end)
+                text = segment.text.strip().replace("\n", " ")
+                f.write(f"{idx+1}\n{start} --> {end}\n{text}\n\n")
 
         subtitles_name, path = _get_subtitle_file_path_name(file_name)
-
         style_subtitles(file=file_name, subtitle_name=subtitles_name, path=path)
+def _format_timestamp(seconds: float) -> str:
+    # Format seconds to SRT timestamp: HH:MM:SS,mmm
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    millis = int((seconds - int(seconds)) * 1000)
+    return f"{hours:02}:{minutes:02}:{secs:02},{millis:03}"
 
 def _get_subtitle_file_path_name(file_name: str) -> tuple[str, str]:
     """
@@ -39,7 +48,7 @@ def _get_subtitle_file_path_name(file_name: str) -> tuple[str, str]:
     """
     splitter = file_name.split("/")
 
-    name = splitter[-1].replace("", ".srt") 
+    name = os.path.splitext(splitter[-1])[0]
     path = "/".join(splitter[:-1]) # All elements except the last one (the file name)
 
     return name, path
