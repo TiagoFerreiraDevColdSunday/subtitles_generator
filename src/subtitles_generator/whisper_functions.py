@@ -9,7 +9,7 @@ from manipulation.subtitles_manipulation import style_subtitles
 # try "large-v3-turbo", device="cuda" or device="metal", compute_type="float16"
 MODEL = WhisperModel("large-v3-turbo", device="cpu", compute_type="int8")
 
-def generate_subtitles(audio_files: List[Path], language: Path, directory: str, parallel: bool) -> None:
+def generate_subtitles(audio_files: List[Path], language: str, directory: str, parallel: bool) -> None:
 
 
     if parallel:
@@ -26,9 +26,9 @@ def generate_subtitles(audio_files: List[Path], language: Path, directory: str, 
         for audio_file in audio_files:
             _generate_subtitles(audio_file, language, directory)
 
-def _generate_subtitles(audio_file: Path, language: Path = "en", directory: str = "") -> None:
+def _generate_subtitles(audio_file: Path, language: str = "en", directory: str = "") -> None:
 
-    file_name = f"{directory}/{audio_file.name}mp3.srt"
+    file_name = f"{directory}/{audio_file.stem}.srt"
     print(f"Processing file {audio_file.name}\n\nFiles will be sent to {directory}\n\n")
 
     segments, info = MODEL.transcribe(str(audio_file), language=language)
