@@ -78,3 +78,5 @@ poetry run python3 main.py <language> <directory> <trigger_file>
 ## 📝 Backlog / TODO
 
 - Improve the visual design of the generated subtitles (will use pysubs2)
+
+- Improve AI quality
