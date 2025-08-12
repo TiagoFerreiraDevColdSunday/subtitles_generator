@@ -31,12 +31,13 @@ def _generate_subtitles(audio_file: Path, language: str = "en", directory: str =
     file_name = f"{directory}/{audio_file.stem}.srt"
     print(f"Processing file {audio_file.name}\n\nFiles will be sent to {directory}\n\n")
 
-    segments, info = MODEL.transcribe(str(audio_file), language=language)
+    segments_iter, _ = MODEL.transcribe(str(audio_file), language=language)
+    segments = list(segments_iter)
 
     # Write SRT manually from faster_whisper segments
     with open(file_name, "w", encoding="utf-8") as f:
         for idx, segment in enumerate(segments):
-            # segment.start, segment.end, segment.text
+
             start = _format_timestamp(segment.start)
             end = _format_timestamp(segment.end)
             text = segment.text.strip().replace("\n", " ")
