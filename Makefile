@@ -1,4 +1,4 @@
-windows_full_instalation:
+windows_full_installation:
 	@powershell -NoProfile -ExecutionPolicy Bypass -Command "\
 		$$ErrorActionPreference='Stop'; \
 		try { winget source update } catch {}; \
@@ -24,14 +24,19 @@ windows_full_instalation:
 		poetry run python src/subtitles_generator/gui.py \
 	"
 
-mac_os_full_instalation:
+mac_os_full_installation:
+	@if ! command -v brew >/dev/null 2>&1; then \
+		echo "Homebrew not found. Installing..."; \
+		/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; \
+	fi
 	brew install python
 	brew install pipx
 	pipx install poetry
-	export PATH="$HOME/.local/bin:$PATH" 
+	export PATH="$$HOME/.local/bin:$$PATH" 
 	poetry config virtualenvs.in-project true
 	poetry install
 	poetry run python src/subtitles_generator/gui.py
+
 
 run:
 	poetry config virtualenvs.in-project true
