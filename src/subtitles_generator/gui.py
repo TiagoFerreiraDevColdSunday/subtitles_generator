@@ -13,9 +13,6 @@ def main():
     p.add_argument("file_type", default="mp3")
     p.add_argument("--parallel", action="store_true", help="Process files in parallel")
     
-    #
-    
-
     args = p.parse_args()
 
     call_event(
