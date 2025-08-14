@@ -25,7 +25,7 @@ def call_event(
     observer.start()
 
     print(f"Parallel: {parallel}")
-    print(f"Watching for new files in: {directory}")
+    print(f"Waiting for the trigger file on: {directory}")
 
     try:
         while True:

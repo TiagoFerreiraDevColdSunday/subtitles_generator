@@ -20,8 +20,10 @@ def generate_subtitles(audio_files: List[Path], language: str, directory: str, p
 
             # Wait for all futures to complete
             for future in as_completed(futures):
-                future.result()
-    
+                try:
+                    future.result()
+                except Exception as e:
+                    print(f"Error in worker process: {e}")
     else:
         for audio_file in audio_files:
             _generate_subtitles(audio_file, language, directory)
@@ -31,16 +33,26 @@ def _generate_subtitles(audio_file: Path, language: str = "en", directory: str =
     file_name = f"{directory}/{audio_file.stem}.srt"
     print(f"Processing file {audio_file.name}\n\nFiles will be sent to {directory}\n\n")
 
-    segments, info = MODEL.transcribe(str(audio_file), language=language)
+    try:
+        print(f"Transcribing {audio_file.name}...")
+        segments, _ = MODEL.transcribe(str(audio_file), language=language)
+    except Exception as e:
+        print(f"\nError processing {audio_file.name}: {e}")
+        return
 
     # Write SRT manually from faster_whisper segments
-    with open(file_name, "w", encoding="utf-8") as f:
-        for idx, segment in enumerate(segments):
-            # segment.start, segment.end, segment.text
-            start = _format_timestamp(segment.start)
-            end = _format_timestamp(segment.end)
-            text = segment.text.strip().replace("\n", " ")
-            f.write(f"{idx+1}\n{start} --> {end}\n{text}\n\n")
+    # Is it possible to make this part faster?
+    try:
+        with open(file_name, "w", encoding="utf-8") as f:
+            for idx, segment in enumerate(segments):
+
+                start = _format_timestamp(segment.start)
+                end = _format_timestamp(segment.end)
+                text = segment.text.strip().replace("\n", " ")
+                f.write(f"{idx+1}\n{start} --> {end}\n{text}\n\n")
+    except OSError as e:
+        print(f"\nError writing to file {file_name}: {e}")
+        return
 
     subtitles_name, path = _get_subtitle_file_path_name(file_name)
     style_subtitles(file=file_name, subtitle_name=subtitles_name, path=path)
