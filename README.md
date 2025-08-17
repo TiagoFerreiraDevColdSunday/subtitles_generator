@@ -92,7 +92,7 @@ You should see a layout similar to this:
 
    ![txt](prints/txt.png)
 
-4. Once the trigger file is detected, processing begins.
+4. Once the trigger file is detected, processing begins. The process may take some time all depends on how many files and their size.
 
    ![reading](prints/reading.png)
 
