@@ -1,6 +1,8 @@
-# 🎙️ Whisper AI Subtitle Generator
+# 🎙️ Fast Whisper AI Subtitle Generator
 
-Generate subtitles from speech using [Whisper AI](https://github.com/openai/whisper).
+Generate subtitles from audio files using [Fast Whisper AI](https://github.com/SYSTRAN/faster-whisper).
+
+ATTENTION: Just like any other speech-to-text LLM, it may produce transcription errors.
 
 ## How does it work?
 
@@ -16,6 +18,26 @@ Then, you can apply those subtitles to your videos:
 
 - `.srt` files are simpler and supported by most video players.
 - `.ass` files are more polished and can include advanced styling (as shown above).
+
+---
+## Requirements
+
+If you want to do it without using Makefile you would need the following to run the project:
+
+- Python
+- Poetry
+
+Go to the project's root and run the following command:
+
+```bash
+poetry install
+```
+
+After this you should be able to execute:
+
+```bash
+poetry run python src/subtitles_generator/gui.py
+```
 
 ---
 
@@ -38,12 +60,23 @@ make run
 
 ---
 
+## Python command
+
+If you don't want to use the GUI you may use:
+
+```bash
+poetry run python src/subtitles_generator/main.py <language> <directory> <trigger_filet> <audio_format> <parallel> <recursive>
+```
+
+
+---
+
 ## GUI
 
 The program uses **Gooey** for the graphical interface.  
 You should see a layout similar to this:
 
-![GUI](prints/gooey.png)
+![GUI](prints/layout.png)
 
 ### Parameter descriptions
 
@@ -51,9 +84,10 @@ You should see a layout similar to this:
 |-----------------|-------------|
 | **language**    | The language you want Whisper to interpret |
 | **directory**   | The directory the program will watch |
-| **file_type**   | The file type you want to generate subtitles from (e.g., `.mp3`) |
+| **file_type**   | The file type you want to generate subtitles from (e.g., `mp3`) ffmpeg is almost capable of consuming any kind of audio file |
 | **file_trigger**| When detected, the program starts searching for files with the `file_type` you specified |
 | **parallel**    | If enabled, processes all detected files simultaneously (performance depends on your computer) |
+| **recursive**    | If enabled, it will also watch for sub-directories traversed recursively |
 
 ---
 
@@ -69,7 +103,7 @@ You should see a layout similar to this:
 
    ![txt](prints/txt.png)
 
-4. Once the trigger file is detected, processing begins.
+4. Once the trigger file is detected, processing begins. The process may take some time all depends on how many files and their size.
 
    ![reading](prints/reading.png)
 

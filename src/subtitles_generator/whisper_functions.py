@@ -37,7 +37,7 @@ def _generate_subtitles(audio_file: Path, language: str = "en", directory: str =
         print(f"Transcribing {audio_file.name}...")
         segments, _ = MODEL.transcribe(str(audio_file), language=language)
     except Exception as e:
-        print(f"\nError processing {audio_file.name}: {e}")
+        print(f"\nError processing {audio_file.name}: {e}\n Wrong file format?")
         return
 
     # Write SRT manually from faster_whisper segments
