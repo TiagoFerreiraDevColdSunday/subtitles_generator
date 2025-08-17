@@ -21,7 +21,7 @@ def call_event(
             recursive: bool = typer.Argument(False, help="If events will be emitted for sub-directories traversed recursively")
             )-> None:
     
-    # Still doing these checks for user who don't use GUI
+    # Still doing these checks for users who don't use GUI
     try:
         directory = Path(directory)
         if not directory.exists() or not directory.is_dir():

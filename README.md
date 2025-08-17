@@ -60,6 +60,17 @@ make run
 
 ---
 
+## Python command
+
+If you don't want to use the GUI you may use:
+
+```bash
+poetry run python src/subtitles_generator/main.py <language> <directory> <trigger_filet> <audio_format> <parallel> <recursive>
+```
+
+
+---
+
 ## GUI
 
 The program uses **Gooey** for the graphical interface.  
