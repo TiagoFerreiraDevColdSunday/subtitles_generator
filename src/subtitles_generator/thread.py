@@ -25,5 +25,6 @@ class Handler(FileSystemEventHandler):
 
     def on_created(self, event):
         path = Path(event.src_path)
-        if path.suffix.lower() == self.file_trigger and path.is_file():
+
+        if path.suffix.lower()[+1:] == self.file_trigger and path.is_file():
             action(self.language, self.directory, self.file_type, self.parallel)
