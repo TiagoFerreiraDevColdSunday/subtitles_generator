@@ -30,6 +30,8 @@ mac_os_full_installation:
 		/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; \
 	fi
 	brew install python
+	brew install tcl-tk
+	brew install python-tk@3.12
 	brew install pipx
 	pipx install poetry
 	export PATH="$$HOME/.local/bin:$$PATH" 

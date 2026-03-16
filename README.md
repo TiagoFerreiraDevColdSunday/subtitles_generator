@@ -73,40 +73,49 @@ poetry run python src/subtitles_generator/main.py <language> <directory> <trigge
 
 ## GUI
 
-The program uses **Gooey** for the graphical interface.  
+The program uses **CustomTkinter** for the graphical interface.  
 You should see a layout similar to this:
 
-![GUI](prints/layout.png)
+![GUI](prints/selection.png)
 
-### Parameter descriptions
+### Watch Folder parameters
 
 | Parameter       | Description |
 |-----------------|-------------|
 | **language**    | The language you want Whisper to interpret |
 | **directory**   | The directory the program will watch |
-| **file_type**   | The file type you want to generate subtitles from (e.g., `mp3`) ffmpeg is almost capable of consuming any kind of audio file |
+| **file_type**   | The file type you want to generate subtitles from (e.g., `mp3`). FFmpeg is capable of consuming almost any kind of audio/video file |
 | **file_trigger**| When detected, the program starts searching for files with the `file_type` you specified |
 | **parallel**    | If enabled, processes all detected files simultaneously (performance depends on your computer) |
-| **recursive**    | If enabled, it will also watch for sub-directories traversed recursively |
+| **recursive**   | If enabled, it will also watch for sub-directories traversed recursively |
+
+### Select Files parameters
+
+| Parameter            | Description |
+|----------------------|-------------|
+| **language**         | The language you want Whisper to interpret |
+| **audio files**      | The audio/video files you want to generate subtitles from (e.g., `.mp3`, `.wav`, `.mp4`) |
+| **output directory** | The directory where the generated subtitle files will be saved. Defaults to the same directory as the selected files |
+| **parallel**         | If enabled, processes all selected files simultaneously (performance depends on your computer) |
 
 ---
 
 ## Process
 
-1. Set the parameters and select the directory.
+1. Run `make run`
 
-2. The program waits until it detects the trigger file you specified.  
+2. You can select between Watch Folder / Select Files
    
-   ![Waiting](prints/waiting.png)
+   ![Selection](prints/selection.png)
 
-3. Place your files in the directory, then create or move the trigger file there (e.g., `.txt`).
+2.1. (Watch Folder) Select the file you want the program to watch (e.g., `.txt`).
 
-   ![txt](prints/txt.png)
+2.1.1. It will start watching the folder, and if you look at the console. You will see the message: 'Waiting for a (file_type) to be created on: "Selected_Directory". Put all the files you want it to Transcribe and just create the trigger file you want.
 
-4. Once the trigger file is detected, processing begins. The process may take some time all depends on how many files and their size.
+2.1.2. Once the trigger file is detected, processing begins. The process may take some time all depends on how many files and their size.
 
-   ![reading](prints/reading.png)
+2.2.1 (Select Files) Select the Files you want to Transcribe and the ouput where the subtitles will be generated.
 
-5. When finished, `.srt` and `.ass` files are generated.
+3. When finished, `.srt` and `.ass` files are generated.
 
    ![generated](prints/generated.png)
