@@ -15,10 +15,10 @@ def action(language: str, directory: str, file_type, parallel: bool):
     
 
 class Handler(FileSystemEventHandler):
-    def __init__(self, language: str, directory: str, file_trigger: str, file_type: str, parallel: bool):
+    def __init__(self, language: str, directory: Path, file_trigger: str, file_type: str, parallel: bool):
         super().__init__()
         self.language = language
-        self.directory = Path(directory)
+        self.directory = directory
         self.file_trigger = file_trigger
         self.file_type = file_type
         self.parallel = parallel
